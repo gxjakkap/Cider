@@ -1,0 +1,65 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: '9.15.0'
+
+      - name: Get package version
+        id: package-version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get short commit hash
+        id: commit-hash
+        run: |
+          SHORT_HASH=$(git rev-parse --short HEAD)
+          echo "hash=$SHORT_HASH" >> $GITHUB_OUTPUT
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build application
+        run: pnpm run build
+
+      - name: Build distributions
+        run: pnpm run dist:all
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.package-version.outputs.version }}-gxjakkap.${{ steps.commit-hash.outputs.hash }}
+          name: Release ${{ steps.package-version.outputs.version }}-gxjakkap.${{ steps.commit-hash.outputs.hash }}
+          draft: false
+          prerelease: false
+          files: |
+            dist/*.exe
+            dist/*.deb
+            dist/*.rpm
+            dist/*.AppImage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
