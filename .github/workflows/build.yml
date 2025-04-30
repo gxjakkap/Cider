@@ -37,6 +37,9 @@ jobs:
           SHORT_HASH=$(git rev-parse --short HEAD)
           echo "hash=$SHORT_HASH" >> $GITHUB_OUTPUT
 
+      - name: Install required buildtools
+        run: sudo apt install -y rpm
+
       - name: Install dependencies
         run: pnpm install
 

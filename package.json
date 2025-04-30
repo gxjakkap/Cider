@@ -34,6 +34,7 @@
   "dependencies": {
     "@achingbrain/ssdp": "^4.2.1",
     "@crowdin/ota-client": "^1.1.3",
+    "@jellybrick/mpris-service": "^2.1.5",
     "adm-zip": "^0.5.16",
     "airtunes2": "github:ciderapp/node_airtunes2",
     "castv2-client": "github:ciderapp/node-castv2-client",
@@ -50,7 +51,6 @@
     "jimp": "^0.22.12",
     "lastfmapi": "^0.1.1",
     "mdns-js": "github:ciderapp/node-mdns-js",
-    "mpris-service": "npm:@jellybrick/mpris-service@^2.1.5",
     "music-metadata": "7.14.0",
     "node-fetch": "^3.3.2",
     "node-ssdp": "^4.0.1",
